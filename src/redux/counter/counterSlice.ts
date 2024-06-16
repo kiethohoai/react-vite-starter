@@ -5,7 +5,7 @@ export interface CounterState {
 }
 
 const initialState: CounterState = {
-  value: 100,
+  value: 0,
 };
 
 export const counterSlice = createSlice({
