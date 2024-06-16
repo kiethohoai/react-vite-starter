@@ -3,7 +3,7 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "./redux/store";
-import { increment } from "./redux/counter/counterSlice";
+import { increment, decrement } from "./redux/counter/counterSlice";
 
 function App() {
   const count = useSelector((state: RootState) => state.counter.value);
@@ -22,6 +22,7 @@ function App() {
 
       <h2>My Current Count = {count}</h2>
       <div style={{ marginTop: "8px" }}>
+        <button onClick={() => dispatch(decrement())}>Increase -1</button>
         <button onClick={() => dispatch(increment())}>Increase +1</button>
       </div>
     </>
