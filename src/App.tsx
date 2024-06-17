@@ -6,8 +6,6 @@ import { useAppDispatch, useAppSelector } from "./redux/hooks";
 
 function App() {
   const count = useAppSelector((state) => state.counter.value);
-  console.log("🚀CHECK  count =", count);
-
   const dispatch = useAppDispatch();
 
   return (
