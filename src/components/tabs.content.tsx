@@ -1,6 +1,6 @@
 import Tab from "react-bootstrap/Tab";
 import Tabs from "react-bootstrap/Tabs";
-import UsersTable from "./UsersTable";
+import UsersTable from "./users.table";
 
 function TabsContent() {
   return (

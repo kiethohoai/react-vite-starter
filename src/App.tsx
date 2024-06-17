@@ -1,5 +1,5 @@
-import Header from "./main/Header";
-import TabsContent from "./main/TabsContent";
+import Header from "./components/header";
+import TabsContent from "./components/tabs.content";
 import "./App.css";
 
 function App() {
@@ -16,4 +16,3 @@ function App() {
 }
 
 export default App;
-3;
