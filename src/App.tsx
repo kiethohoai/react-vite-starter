@@ -1,5 +1,5 @@
-import Header from "./components/header";
-import TabsContent from "./components/tabs.content";
+import Header from "./components/Header";
+import TabsContent from "./components/TableContent";
 import "./App.css";
 import { useAppSelector, useAppDispatch } from "./hooks";
 // import { decrement, increment } from "./redux/counter/counterSlice";

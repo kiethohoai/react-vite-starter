@@ -12,7 +12,15 @@ export const fetchListUsers = createAsyncThunk(
   },
 );
 
-const initialState = {
+interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const initialState: {
+  listUsers: IUser[];
+} = {
   listUsers: [],
 };
 
@@ -26,6 +34,7 @@ export const userSlice = createSlice({
       // Add user to the state array
       // state.entities.push(action.payload);
       console.log("🚀CHECK  action =", action);
+      state.listUsers = action.payload;
     });
   },
 });
