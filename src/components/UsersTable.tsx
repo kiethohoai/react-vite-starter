@@ -1,7 +1,8 @@
 import Table from "react-bootstrap/Table";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchListUsers } from "../redux/user/userSlice";
+import { toast } from "react-toastify";
 
 function UsersTable() {
   const dispatch = useAppDispatch();
@@ -9,6 +10,7 @@ function UsersTable() {
 
   useEffect(() => {
     dispatch(fetchListUsers());
+    toast.success("Fetch List Users Success!");
   }, []);
 
   return (
