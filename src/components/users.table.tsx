@@ -1,5 +1,7 @@
 import Table from "react-bootstrap/Table";
 import { useEffect, useState } from "react";
+import { useAppDispatch } from "../hooks";
+import { fetchListUsers } from "../redux/user/userSlice";
 
 interface IUser {
   id: number;
@@ -9,18 +11,22 @@ interface IUser {
 
 function UsersTable() {
   const [users, setUsers] = useState<IUser[]>([]);
+  const dispatch = useAppDispatch();
+
+  // useEffect(() => {
+  //   fetchUsers();
+  // }, []);
+
+  // const fetchUsers = async () => {
+  //   const res = await fetch("http://localhost:8000/users");
+  //   const data = await res.json();
+  //   setUsers(data);
+  // };
 
   useEffect(() => {
-    fetchUsers();
+    dispatch(fetchListUsers());
   }, []);
 
-  const fetchUsers = async () => {
-    const res = await fetch("http://localhost:8000/users");
-    const data = await res.json();
-    setUsers(data);
-  };
-
-  console.log("🚀CHECK  users =", users);
   return (
     <Table striped bordered hover>
       <thead>
