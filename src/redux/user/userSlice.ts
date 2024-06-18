@@ -1,8 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-// import { userAPI } from "./userAPI";
 
-// First, create the thunk
+interface IUserPayload {
+  name: string;
+  email: string;
+}
+
+interface IUserPayloadUpdate {
+  id: number;
+  email: string;
+  name: string;
+}
+
+interface IUser {
+  id: number;
+  name: string;
+  email: string;
+}
+
+const initialState: {
+  listUsers: IUser[];
+  isCreateSucess: boolean;
+  isUpdateSucess: boolean;
+} = {
+  listUsers: [],
+  isCreateSucess: false,
+  isUpdateSucess: false,
+};
+
+// fetchListUsers
 export const fetchListUsers = createAsyncThunk(
   "users/fetchListUsers",
   async (userId, thunkAPI) => {
@@ -12,6 +38,7 @@ export const fetchListUsers = createAsyncThunk(
   },
 );
 
+// createNewUser
 export const createNewUser = createAsyncThunk(
   "users/createNewUser",
   async (payload: IUserPayload, thunkAPI) => {
@@ -30,24 +57,31 @@ export const createNewUser = createAsyncThunk(
     return data;
   },
 );
-interface IUserPayload {
-  name: string;
-  email: string;
-}
 
-interface IUser {
-  id: number;
-  name: string;
-  email: string;
-}
+// updateUser
+export const updateUser = createAsyncThunk(
+  "users/updateUser",
+  async (payload: IUserPayloadUpdate, thunkAPI) => {
+    console.log("🚀CHECK  payload =", payload);
+    const res = await fetch(`http://localhost:8000/users/${payload.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        email: payload.email,
+        name: payload.name,
+      }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
 
-const initialState: {
-  listUsers: IUser[];
-  isCreateSucess: boolean;
-} = {
-  listUsers: [],
-  isCreateSucess: false,
-};
+    const data = await res.json();
+    if (data && data.id) {
+      thunkAPI.dispatch(fetchListUsers());
+      thunkAPI.dispatch(setIsUpdateSucess());
+    }
+    return data;
+  },
+);
 
 export const userSlice = createSlice({
   name: "user",
@@ -55,6 +89,14 @@ export const userSlice = createSlice({
   reducers: {
     resetIsCreateSucess: (state) => {
       state.isCreateSucess = false;
+    },
+
+    setIsUpdateSucess: (state) => {
+      state.isUpdateSucess = true;
+    },
+
+    resetIsUpdateSucess: (state) => {
+      state.isUpdateSucess = false;
     },
   },
   extraReducers: (builder) => {
@@ -74,5 +116,6 @@ export const userSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { resetIsCreateSucess } = userSlice.actions;
+export const { resetIsCreateSucess, resetIsUpdateSucess, setIsUpdateSucess } =
+  userSlice.actions;
 export default userSlice.reducer;

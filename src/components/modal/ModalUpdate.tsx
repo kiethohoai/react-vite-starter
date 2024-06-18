@@ -1,23 +1,49 @@
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { resetIsUpdateSucess, updateUser } from "../../redux/user/userSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { toast } from "react-toastify";
 
 function ModalUpdate(props: any) {
   const { show, setShow, upUser } = props;
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const isUpdateSucess = useAppSelector((state) => state.user.isUpdateSucess);
 
   useEffect(() => {
     setEmail(upUser.email);
     setName(upUser.name);
   }, [upUser]);
 
+  useEffect(() => {
+    if (isUpdateSucess === true) {
+      toast.success("Update Success!");
+      dispatch(resetIsUpdateSucess());
+      handleClose();
+    }
+  }, [isUpdateSucess]);
+
   const handleClose = () => setShow(false);
   const handleUpdateUser = () => {
     console.log("🚀CHECK  id =", upUser.id);
     console.log("🚀CHECK  email =", email);
     console.log("🚀CHECK  name =", name);
-    handleClose();
+
+    // Validate
+    if (!email) {
+      alert("Invalid Email!");
+      return;
+    }
+    if (!name) {
+      alert("Invalid Email!");
+      return;
+    }
+
+    // React => Redux
+    let id: number = upUser.id;
+    dispatch(updateUser({ id, email, name }));
   };
 
   return (
