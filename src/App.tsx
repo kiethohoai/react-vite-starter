@@ -21,20 +21,6 @@ function App() {
       <div className="app-content">
         <TabsContent />
       </div>
-
-      {/* <hr />
-      <div>Current Counter = {count.value}</div>
-      <div>
-        <button onClick={() => dispatch(decrement())}>Decrease -1</button>
-        <button onClick={() => dispatch(increment())}>Increase +1</button>
-      </div>
-
-      <hr />
-      <div>Current User = {user.listUsers}</div>
-      <div>
-        <button onClick={() => dispatch(godown())}>GoDown -10</button>
-        <button onClick={() => dispatch(goup())}>GoUp +10</button>
-      </div> */}
     </>
   );
 }
