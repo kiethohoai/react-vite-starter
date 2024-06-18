@@ -3,15 +3,14 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchListUsers } from "../redux/user/userSlice";
 import { toast } from "react-toastify";
-import "./UsersTable.css";
 import ModalAddNew from "./modal/ModalAddNew";
 import ModalUpdate from "./modal/ModalUpdate";
 import ModalDelete from "./modal/ModalDelete";
 
-function UsersTable() {
+function UsersTable(props: any) {
   const dispatch = useAppDispatch();
   const users = useAppSelector((state) => state.user.listUsers);
-  const [isShowAddNew, setIsShowAddNew] = useState(false);
+  const { isShowAddNew, setIsShowAddNew } = props;
   const [isShowUpdate, setIsShowUpdate] = useState(false);
   const [isShowDelete, setIsShowDelete] = useState(false);
 
@@ -70,14 +69,6 @@ function UsersTable() {
           })}
         </tbody>
       </Table>
-      <div className="add-new">
-        <button
-          onClick={() => setIsShowAddNew(true)}
-          className="btn btn-outline-primary"
-        >
-          Add New User
-        </button>
-      </div>
       <ModalAddNew show={isShowAddNew} setShow={setIsShowAddNew} />
       <ModalUpdate
         show={isShowUpdate}

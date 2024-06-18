@@ -1,15 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-import { useAppDispatch } from "../../hooks";
-import { createNewUser } from "../../redux/user/userSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { createNewUser, resetIsCreateSucess } from "../../redux/user/userSlice";
+import { toast } from "react-toastify";
 
 function ModalAddNew(props: any) {
   const { show, setShow } = props;
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
-
   const dispatch = useAppDispatch();
+  const isCreateSucess = useAppSelector((state) => state.user.isCreateSucess);
+  useEffect(() => {
+    //
+    if (isCreateSucess === true) {
+      toast.success("Create Succeed!");
+      handleClose();
+      setEmail("");
+      setName("");
+      dispatch(resetIsCreateSucess());
+    }
+  }, [isCreateSucess]);
 
   const handleClose = () => {
     setShow(false);
@@ -29,15 +40,8 @@ function ModalAddNew(props: any) {
     }
 
     // Check
-    console.log("🚀CHECK  { email, name } =", { email, name });
-
     // Call API => Call Redux
     dispatch(createNewUser({ name, email })); //payload
-
-    // Finish
-    handleClose();
-    setEmail("");
-    setName("");
   };
 
   return (
