@@ -13,6 +13,9 @@ function ModalUpdate(props: any) {
   const isUpdateSucess = useAppSelector((state) => state.user.isUpdateSucess);
 
   useEffect(() => {
+    if (Object.keys(upUser).length === 0 && upUser.constructor === Object) {
+      return;
+    }
     setEmail(upUser.email);
     setName(upUser.name);
   }, [upUser]);
@@ -27,10 +30,6 @@ function ModalUpdate(props: any) {
 
   const handleClose = () => setShow(false);
   const handleUpdateUser = () => {
-    console.log("🚀CHECK  id =", upUser.id);
-    console.log("🚀CHECK  email =", email);
-    console.log("🚀CHECK  name =", name);
-
     // Validate
     if (!email) {
       alert("Invalid Email!");

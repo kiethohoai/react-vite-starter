@@ -1,11 +1,23 @@
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { deleteUser, resetIsDeleteSucess } from "../../redux/user/userSlice";
+import { toast } from "react-toastify";
 
 function ModalDelete(props: any) {
   const { show, setShow, delUser } = props;
   const [email, setEmail] = useState<string>("");
   const [name, setName] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const isDeleteSucess = useAppSelector((state) => state.user.isDeleteSucess);
+  useEffect(() => {
+    if (isDeleteSucess === true) {
+      toast.success("Delete Success!");
+      dispatch(resetIsDeleteSucess());
+      handleClose();
+    }
+  }, [isDeleteSucess]);
 
   useEffect(() => {
     setEmail(delUser.email);
@@ -14,9 +26,10 @@ function ModalDelete(props: any) {
 
   const handleClose = () => setShow(false);
   const handleDeleteUser = () => {
-    console.log("🚀CHECK  id =", delUser.id);
-    console.log("🚀CHECK  email =", email);
-    console.log("🚀CHECK  name =", name);
+    // redux
+    let id: number = delUser.id;
+    dispatch(deleteUser({ id, email, name }));
+
     handleClose();
   };
 
