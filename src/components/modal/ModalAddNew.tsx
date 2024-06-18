@@ -1,30 +1,50 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { useAppDispatch } from "../../hooks";
+import { createNewUser } from "../../redux/user/userSlice";
 
-function ModalUpdate(props: any) {
-  const { show, setShow, upUser } = props;
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+function ModalAddNew(props: any) {
+  const { show, setShow } = props;
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
-  useEffect(() => {
-    setEmail(upUser.email);
-    setName(upUser.name);
-  }, [upUser]);
+  const dispatch = useAppDispatch();
 
-  const handleClose = () => setShow(false);
-  const handleUpdateUser = () => {
-    console.log("🚀CHECK  id =", upUser.id);
-    console.log("🚀CHECK  email =", email);
-    console.log("🚀CHECK  name =", name);
+  const handleClose = () => {
+    setShow(false);
+    setEmail("");
+    setName("");
+  };
+
+  const handleAddNew = () => {
+    // validate
+    if (!email) {
+      alert("Invalid Email!");
+      return;
+    }
+    if (!name) {
+      alert("Invalid Name!");
+      return;
+    }
+
+    // Check
+    console.log("🚀CHECK  { email, name } =", { email, name });
+
+    // Call API => Call Redux
+    dispatch(createNewUser({ name, email })); //payload
+
+    // Finish
     handleClose();
+    setEmail("");
+    setName("");
   };
 
   return (
     <>
       <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Update User</Modal.Title>
+          <Modal.Title>Add New User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="form-floating mb-3">
@@ -54,8 +74,8 @@ function ModalUpdate(props: any) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => handleUpdateUser()}>
-            Update
+          <Button variant="primary" onClick={() => handleAddNew()}>
+            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
@@ -63,4 +83,4 @@ function ModalUpdate(props: any) {
   );
 }
 
-export default ModalUpdate;
+export default ModalAddNew;

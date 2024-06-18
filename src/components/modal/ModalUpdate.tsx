@@ -1,31 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
-function ModalAddNew(props: any) {
-  const { show, setShow } = props;
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+function ModalUpdate(props: any) {
+  const { show, setShow, upUser } = props;
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
-  const handleClose = () => {
-    setShow(false);
-    setEmail("");
-    setName("");
-  };
+  useEffect(() => {
+    setEmail(upUser.email);
+    setName(upUser.name);
+  }, [upUser]);
 
-  const handleAddNew = () => {
+  const handleClose = () => setShow(false);
+  const handleUpdateUser = () => {
+    console.log("🚀CHECK  id =", upUser.id);
     console.log("🚀CHECK  email =", email);
     console.log("🚀CHECK  name =", name);
     handleClose();
-    setEmail("");
-    setName("");
   };
 
   return (
     <>
       <Modal size="lg" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add New User</Modal.Title>
+          <Modal.Title>Update User</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="form-floating mb-3">
@@ -55,8 +54,8 @@ function ModalAddNew(props: any) {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={() => handleAddNew()}>
-            Save Changes
+          <Button variant="primary" onClick={() => handleUpdateUser()}>
+            Update
           </Button>
         </Modal.Footer>
       </Modal>
@@ -64,4 +63,4 @@ function ModalAddNew(props: any) {
   );
 }
 
-export default ModalAddNew;
+export default ModalUpdate;

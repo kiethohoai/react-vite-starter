@@ -4,8 +4,8 @@ import Modal from "react-bootstrap/Modal";
 
 function ModalDelete(props: any) {
   const { show, setShow, delUser } = props;
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
   useEffect(() => {
     setEmail(delUser.email);

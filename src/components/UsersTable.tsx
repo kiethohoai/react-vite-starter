@@ -4,9 +4,9 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchListUsers } from "../redux/user/userSlice";
 import { toast } from "react-toastify";
 import "./UsersTable.css";
-import ModalAddNew from "./ModalAddNew";
-import ModalUpdate from "./ModalUpdate";
-import ModalDelete from "./ModalDelete";
+import ModalAddNew from "./modal/ModalAddNew";
+import ModalUpdate from "./modal/ModalUpdate";
+import ModalDelete from "./modal/ModalDelete";
 
 function UsersTable() {
   const dispatch = useAppDispatch();

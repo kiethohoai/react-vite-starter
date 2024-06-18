@@ -12,6 +12,28 @@ export const fetchListUsers = createAsyncThunk(
   },
 );
 
+export const createNewUser = createAsyncThunk(
+  "users/createNewUser",
+  async (payload: IUserPayload, thunkAPI) => {
+    console.log("🚀CHECK  payload =", payload);
+
+    const res = await fetch("http://localhost:8000/users", {
+      method: "POST",
+      body: JSON.stringify({ ...payload }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    return data;
+  },
+);
+interface IUserPayload {
+  name: string;
+  email: string;
+}
+
 interface IUser {
   id: number;
   name: string;
