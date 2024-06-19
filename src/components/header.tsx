@@ -13,7 +13,7 @@ function Header() {
   useEffect(() => {
     const body = document.querySelector("body");
     if (body) {
-      body.setAttribute("data-bs-theme", mode);
+      body.setAttribute("data-bs-theme", mode === false ? "light" : "dark");
     }
   }, [mode]);
 
@@ -28,13 +28,9 @@ function Header() {
               <Form.Check
                 type="switch"
                 id="custom-switch"
-                label={mode === "light" ? "Light Mode" : "Dark Mode"}
-                value={mode}
-                onChange={(e) =>
-                  dispatch(
-                    changeMod(e.target.value === "light" ? "dark" : "light"),
-                  )
-                }
+                label={mode === false ? "Light Mode" : "Dark Mode"}
+                defaultChecked={mode}
+                onChange={(e) => dispatch(changeMod(e.target.checked))}
               />
             </Form>
           </Navbar.Text>

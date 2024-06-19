@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: {
-  mode: string;
+  mode: boolean;
 } = {
-  mode: "light",
+  mode: false,
 };
 
 export const appSlice = createSlice({
@@ -11,7 +11,6 @@ export const appSlice = createSlice({
   initialState,
   reducers: {
     changeMod: (state, action) => {
-      console.log("🚀CHECK  action =", action);
       state.mode = action.payload;
     },
   },
