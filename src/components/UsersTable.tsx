@@ -2,7 +2,6 @@ import Table from "react-bootstrap/Table";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchListUsers } from "../redux/user/userSlice";
-import { toast } from "react-toastify";
 import ModalAddNew from "./modal/ModalAddNew";
 import ModalUpdate from "./modal/ModalUpdate";
 import ModalDelete from "./modal/ModalDelete";
@@ -19,7 +18,6 @@ function UsersTable(props: any) {
 
   useEffect(() => {
     dispatch(fetchListUsers());
-    toast.success("Fetch List Users Success!");
   }, []);
 
   const handleUpdateUser = (user: object) => {

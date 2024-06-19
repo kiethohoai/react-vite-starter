@@ -8,6 +8,7 @@ import Blogs from "./Blogs";
 function TabsContent() {
   const [isShowAddNew, setIsShowAddNew] = useState(false);
 
+
   return (
     <Tabs
       defaultActiveKey="users"
