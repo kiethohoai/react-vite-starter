@@ -17,14 +17,16 @@ interface IDataCreate {
 const initialState: {
   listBlogs: IBlogs[];
   isCreatePostSuccess: boolean;
+  isUpdatePostSuccess: boolean;
 } = {
   listBlogs: [],
   isCreatePostSuccess: false,
+  isUpdatePostSuccess: false,
 };
 
 // fetchListBlogs
 export const fetchListBlogs = createAsyncThunk(
-  "users/fetchListBlogs",
+  "blogs/fetchListBlogs",
   async (payload, thunkAPI) => {
     const res = await fetch("http://localhost:8000/blogs");
     const data = await res.json();
@@ -34,7 +36,7 @@ export const fetchListBlogs = createAsyncThunk(
 
 // createABlogPost
 export const createABlogPost = createAsyncThunk(
-  "users/createABlogPost",
+  "blogs/createABlogPost",
   async (payload: IDataCreate, thunkAPI) => {
     const res = await fetch("http://localhost:8000/blogs", {
       method: "POST",
@@ -52,28 +54,26 @@ export const createABlogPost = createAsyncThunk(
   },
 );
 
-// updateUser
-// export const updateUser = createAsyncThunk(
-//   "users/updateUser",
-//   async (payload: IUserPayloadUpdate, thunkAPI) => {
-//     const res = await fetch(`http://localhost:8000/users/${payload.id}`, {
-//       method: "PUT",
-//       body: JSON.stringify({
-//         email: payload.email,
-//         name: payload.name,
-//       }),
-//       headers: {
-//         "content-type": "application/json",
-//       },
-//     });
-
-//     const data = await res.json();
-//     if (data && data.id) {
-//       thunkAPI.dispatch(fetchListUsers());
-//     }
-//     return data;
-//   },
-// );
+// updateBlogPost
+export const updateBlogPost = createAsyncThunk(
+  "blogs/updateBlogPost",
+  async (payload: IBlogs, thunkAPI) => {
+    const res = await fetch(`http://localhost:8000/blogs/${payload.id}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        title: payload.title,
+        content: payload.content,
+        author: payload.author,
+      }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
+    const data = await res.json();
+    thunkAPI.dispatch(fetchListBlogs());
+    return data;
+  },
+);
 
 // deleteUser
 // export const deleteUser = createAsyncThunk(
@@ -96,8 +96,12 @@ export const blogSlice = createSlice({
   name: "blog",
   initialState,
   reducers: {
-    resetisCreatePostSuccess(state) {
+    resetIsCreatePostSuccess(state) {
       state.isCreatePostSuccess = false;
+    },
+
+    resetIsUpdatePostSuccess(state) {
+      state.isUpdatePostSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -113,10 +117,17 @@ export const blogSlice = createSlice({
         // Add user to the state array
         // state.entities.push(action.payload);
         state.isCreatePostSuccess = true;
+      })
+
+      .addCase(updateBlogPost.fulfilled, (state, action) => {
+        // Add user to the state array
+        // state.entities.push(action.payload);
+        state.isUpdatePostSuccess = true;
       });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { resetisCreatePostSuccess } = blogSlice.actions;
+export const { resetIsCreatePostSuccess, resetIsUpdatePostSuccess } =
+  blogSlice.actions;
 export default blogSlice.reducer;

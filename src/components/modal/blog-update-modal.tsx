@@ -4,41 +4,55 @@ import Modal from "react-bootstrap/Modal";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
-  createABlogPost,
-  resetIsCreatePostSuccess,
+  resetIsUpdatePostSuccess,
+  updateBlogPost,
 } from "../../redux/blog/blogSlice";
 
-const BlogAddNew = (props: any) => {
+const BlogUpdatePost = (props: any) => {
   // props, state, redux state
-  const [isShowBlog, setIsShowBlog] = useState(false);
+  const { isShowUpdate, setIsShowUpdate, dataUpdate } = props;
+  const [id, setId] = useState<number>(0);
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [author, setAuthor] = useState<string>("");
   const dispatch = useAppDispatch();
-  const isCreatePostSuccess = useAppSelector(
-    (state) => state.blog.isCreatePostSuccess,
+  const isUpdatePosstSuccess = useAppSelector(
+    (state) => state.blog.isUpdatePostSuccess,
   );
 
+  // fill data
   useEffect(() => {
-    if (isCreatePostSuccess === true) {
-      toast.success("Create A Post Success!");
-      dispatch(resetIsCreatePostSuccess());
+    if (
+      Object.keys(dataUpdate).length === 0 &&
+      dataUpdate.constructor === Object
+    ) {
+      return;
+    }
+
+    setId(dataUpdate.id);
+    setTitle(dataUpdate.title);
+    setContent(dataUpdate.content);
+    setAuthor(dataUpdate.author);
+  }, [dataUpdate]);
+
+  // finish & notify
+  useEffect(() => {
+    if (isUpdatePosstSuccess === true) {
+      toast.success("Update A Post Success!");
+      dispatch(resetIsUpdatePostSuccess());
       // finish
       handleClose();
     }
-  }, [isCreatePostSuccess]);
+  }, [isUpdatePosstSuccess]);
 
   // handleClose
   const handleClose = () => {
-    setIsShowBlog(false);
-    setTitle("");
-    setContent("");
-    setAuthor("");
+    setIsShowUpdate(false);
   };
-  const handleShow = () => setIsShowBlog(true);
+  const handleShow = () => setIsShowUpdate(true);
 
-  // handleAddNewPost
-  const handleAddNewPost = () => {
+  // handleUpdatePost
+  const handleUpdatePost = () => {
     // validate
     if (!title) {
       toast.error("Invalid title");
@@ -53,29 +67,22 @@ const BlogAddNew = (props: any) => {
       toast.error("Invalid author");
       return;
     }
+
     // dispatch
-    dispatch(createABlogPost({ title, content, author }));
+    dispatch(updateBlogPost({ id, title, content, author }));
   };
 
   return (
     <>
-      <Button
-        variant="primary"
-        onClick={handleShow}
-        style={{ position: "relative", top: "-8px", left: "1155px" }}
-      >
-        Add New Post
-      </Button>
-
       <Modal
         size="lg"
-        show={isShowBlog}
+        show={isShowUpdate}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
       >
         <Modal.Header closeButton>
-          <Modal.Title>Add New Post (Blog)</Modal.Title>
+          <Modal.Title>Update Post - Blog</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {/* Title */}
@@ -119,7 +126,7 @@ const BlogAddNew = (props: any) => {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={() => handleAddNewPost()}>
+          <Button variant="primary" onClick={() => handleUpdatePost()}>
             Save Changes
           </Button>
           <Button variant="secondary" onClick={handleClose}>
@@ -131,4 +138,4 @@ const BlogAddNew = (props: any) => {
   );
 };
 
-export default BlogAddNew;
+export default BlogUpdatePost;
