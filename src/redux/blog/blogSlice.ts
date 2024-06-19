@@ -8,10 +8,18 @@ interface IBlogs {
   content: string;
 }
 
+interface IDataCreate {
+  title: string;
+  content: string;
+  author: string;
+}
+
 const initialState: {
   listBlogs: IBlogs[];
+  isCreatePostSuccess: boolean;
 } = {
   listBlogs: [],
+  isCreatePostSuccess: false,
 };
 
 // fetchListBlogs
@@ -24,25 +32,25 @@ export const fetchListBlogs = createAsyncThunk(
   },
 );
 
-// createNewUser
-// export const createNewUser = createAsyncThunk(
-//   "users/createNewUser",
-//   async (payload: IUserPayload, thunkAPI) => {
-//     const res = await fetch("http://localhost:8000/users", {
-//       method: "POST",
-//       body: JSON.stringify({ ...payload }),
-//       headers: {
-//         "content-type": "application/json",
-//       },
-//     });
+// createABlogPost
+export const createABlogPost = createAsyncThunk(
+  "users/createABlogPost",
+  async (payload: IDataCreate, thunkAPI) => {
+    const res = await fetch("http://localhost:8000/blogs", {
+      method: "POST",
+      body: JSON.stringify({ ...payload }),
+      headers: {
+        "content-type": "application/json",
+      },
+    });
 
-//     const data = await res.json();
-//     if (data && data.id) {
-//       thunkAPI.dispatch(fetchListUsers());
-//     }
-//     return data;
-//   },
-// );
+    const data = await res.json();
+    if (data && data.id) {
+      thunkAPI.dispatch(fetchListBlogs());
+    }
+    return data;
+  },
+);
 
 // updateUser
 // export const updateUser = createAsyncThunk(
@@ -87,17 +95,28 @@ export const fetchListBlogs = createAsyncThunk(
 export const blogSlice = createSlice({
   name: "blog",
   initialState,
-  reducers: {},
+  reducers: {
+    resetisCreatePostSuccess(state) {
+      state.isCreatePostSuccess = false;
+    },
+  },
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
-    builder.addCase(fetchListBlogs.fulfilled, (state, action) => {
-      // Add user to the state array
-      // state.entities.push(action.payload);
-      state.listBlogs = action.payload;
-    });
+    builder
+      .addCase(fetchListBlogs.fulfilled, (state, action) => {
+        // Add user to the state array
+        // state.entities.push(action.payload);
+        state.listBlogs = action.payload;
+      })
+
+      .addCase(createABlogPost.fulfilled, (state, action) => {
+        // Add user to the state array
+        // state.entities.push(action.payload);
+        state.isCreatePostSuccess = true;
+      });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {} = blogSlice.actions;
+export const { resetisCreatePostSuccess } = blogSlice.actions;
 export default blogSlice.reducer;

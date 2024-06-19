@@ -11,7 +11,7 @@ function TabsContent() {
 
   return (
     <Tabs
-      defaultActiveKey="users"
+      defaultActiveKey="blogs"
       id="uncontrolled-tab-example"
       className="mb-3 mt-3"
     >
