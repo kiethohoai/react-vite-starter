@@ -3,6 +3,7 @@ import Tabs from "react-bootstrap/Tabs";
 import UsersTable from "./UsersTable";
 import "./TableContent.css";
 import { useState } from "react";
+import Blogs from "./Blogs";
 
 function TabsContent() {
   const [isShowAddNew, setIsShowAddNew] = useState(false);
@@ -26,7 +27,7 @@ function TabsContent() {
         />
       </Tab>
       <Tab eventKey="blogs" title="Blogs">
-        Tab content for Profile
+        <Blogs />
       </Tab>
     </Tabs>
   );
