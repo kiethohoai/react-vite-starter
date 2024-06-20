@@ -4,12 +4,16 @@ import { fetchListBlogs } from "../redux/blog/blogSlice";
 import "./Blogs.css";
 import BlogAddNew from "./modal/blog-addnew-modal";
 import BlogUpdatePost from "./modal/blog-update-modal";
+import BlogDeletePost from "./modal/blog-delete-modal";
 
 const Blogs = (props: any) => {
   const dispatch = useAppDispatch();
   const listBlogs = useAppSelector((state) => state.blog.listBlogs);
-  const [isShowUpdate, setIsShowUpdate] = useState(false);
-  const [dataUpdate, setDataUpdate] = useState({});
+  const [isShowUpdate, setIsShowUpdate] = useState<boolean>(false);
+  const [dataUpdate, setDataUpdate] = useState<object>({});
+
+  const [isShowDelete, setIsShowDelete] = useState<boolean>(false);
+  const [dataDelete, setDataDelete] = useState<object>({});
 
   interface IData {
     id: number;
@@ -28,6 +32,11 @@ const Blogs = (props: any) => {
     setDataUpdate(data);
   };
 
+  const handleDeletePost = (data: IData) => {
+    setIsShowDelete(true);
+    setDataDelete(data);
+  };
+
   return (
     <>
       {/* Feature Component */}
@@ -36,6 +45,11 @@ const Blogs = (props: any) => {
         isShowUpdate={isShowUpdate}
         setIsShowUpdate={setIsShowUpdate}
         dataUpdate={dataUpdate}
+      />
+      <BlogDeletePost
+        isShowDelete={isShowDelete}
+        setIsShowDelete={setIsShowDelete}
+        dataDelete={dataDelete}
       />
 
       <table className="table-container table table-bordered">
@@ -68,6 +82,7 @@ const Blogs = (props: any) => {
                     <button
                       className="btn btn-danger"
                       style={{ marginLeft: "3px" }}
+                      onClick={() => handleDeletePost(item)}
                     >
                       Del-
                     </button>

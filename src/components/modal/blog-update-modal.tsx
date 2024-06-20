@@ -38,7 +38,7 @@ const BlogUpdatePost = (props: any) => {
   // finish & notify
   useEffect(() => {
     if (isUpdatePosstSuccess === true) {
-      toast.success("Update A Post Success!");
+      toast.success("UPDATED");
       dispatch(resetIsUpdatePostSuccess());
       // finish
       handleClose();

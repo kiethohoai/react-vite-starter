@@ -18,10 +18,12 @@ const initialState: {
   listBlogs: IBlogs[];
   isCreatePostSuccess: boolean;
   isUpdatePostSuccess: boolean;
+  isDeletePostSuccess: boolean;
 } = {
   listBlogs: [],
   isCreatePostSuccess: false,
   isUpdatePostSuccess: false,
+  isDeletePostSuccess: false,
 };
 
 // fetchListBlogs
@@ -75,22 +77,23 @@ export const updateBlogPost = createAsyncThunk(
   },
 );
 
-// deleteUser
-// export const deleteUser = createAsyncThunk(
-//   "users/deleteUser",
-//   async (payload: IUserPayloadUpdate, thunkAPI) => {
-//     const res = await fetch(`http://localhost:8000/users/${payload.id}`, {
-//       method: "DELETE",
-//       headers: {
-//         "content-type": "application/json",
-//       },
-//     });
+// deleteBlogPost
+export const deleteBlogPost = createAsyncThunk(
+  "blogs/deleteBlogPost",
+  async (payload: IBlogs, thunkAPI) => {
+    console.log("🚀CHECK  payload =", payload);
+    const res = await fetch(`http://localhost:8000/blogs/${payload.id}`, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+      },
+    });
 
-//     const data = await res.json();
-//     thunkAPI.dispatch(fetchListUsers());
-//     return data;
-//   },
-// );
+    const data = await res.json();
+    thunkAPI.dispatch(fetchListBlogs());
+    return data;
+  },
+);
 
 export const blogSlice = createSlice({
   name: "blog",
@@ -102,6 +105,10 @@ export const blogSlice = createSlice({
 
     resetIsUpdatePostSuccess(state) {
       state.isUpdatePostSuccess = false;
+    },
+
+    resetIsDeletePostSuccess(state) {
+      state.isDeletePostSuccess = false;
     },
   },
   extraReducers: (builder) => {
@@ -123,11 +130,20 @@ export const blogSlice = createSlice({
         // Add user to the state array
         // state.entities.push(action.payload);
         state.isUpdatePostSuccess = true;
+      })
+
+      .addCase(deleteBlogPost.fulfilled, (state, action) => {
+        // Add user to the state array
+        // state.entities.push(action.payload);
+        state.isDeletePostSuccess = true;
       });
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { resetIsCreatePostSuccess, resetIsUpdatePostSuccess } =
-  blogSlice.actions;
+export const {
+  resetIsCreatePostSuccess,
+  resetIsUpdatePostSuccess,
+  resetIsDeletePostSuccess,
+} = blogSlice.actions;
 export default blogSlice.reducer;

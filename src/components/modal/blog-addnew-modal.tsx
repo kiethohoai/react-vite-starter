@@ -21,9 +21,8 @@ const BlogAddNew = (props: any) => {
 
   useEffect(() => {
     if (isCreatePostSuccess === true) {
-      toast.success("Create A Post Success!");
+      toast.success("CREATED!");
       dispatch(resetIsCreatePostSuccess());
-      // finish
       handleClose();
     }
   }, [isCreatePostSuccess]);
